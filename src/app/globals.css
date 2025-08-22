@@ -1,0 +1,64 @@
+/* 1️⃣ Import Google Fonts at the very top */
+@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Graduate&family=Parkinsans:wght@300..800&display=swap');
+
+/* 2️⃣ Tailwind import */
+@import "tailwindcss";
+
+/* 3️⃣ Root variables */
+:root {
+  --background: #ffffff;
+  --foreground: #1c1a1a;
+  --font-sans: "Archivo", "Helvetica", "Arial", sans-serif;
+  --font-mono: "Fira Code", monospace;
+}
+
+/* 4️⃣ Dark mode variables */
+[data-theme="dark"] {
+  --background: #131212; /* Dark background */
+  --foreground: #ededed; /* Light text */
+}
+
+/* 5️⃣ Body styling */
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+/* 6️⃣ Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  color: var(--foreground);
+}
+
+/* 7️⃣ Paragraphs */
+p {
+  color: var(--foreground);
+  font-size: 1rem;
+}
+
+/* 8️⃣ Graduate Font */
+.font-graduate {
+  font-family: 'Graduate', serif;
+}
+.graduate-regular {
+  font-family: 'Graduate', serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* 9️⃣ Parkinsans Font */
+.font-parkinsans {
+  font-family: 'Parkinsans', sans-serif;
+}
+
+/* Parkinsans variants */
+.parkinsans-300 { font-weight: 300; font-style: normal; }
+.parkinsans-400 { font-weight: 400; font-style: normal; }
+.parkinsans-500 { font-weight: 500; font-style: normal; }
+.parkinsans-600 { font-weight: 600; font-style: normal; }
+.parkinsans-700 { font-weight: 700; font-style: normal; }
+.parkinsans-800 { font-weight: 800; font-style: normal; }
