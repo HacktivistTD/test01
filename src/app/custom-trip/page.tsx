@@ -4,10 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { Calendar } from '@/components/ui/calendar';
 import { Button } from '@/components/ui/button';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useAuth } from '@/context/AuthContext';
+import { UserAuth } from '@/context/AuthContext'; // CORRECTED IMPORT
 import { db, auth } from '@/lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth'; // CORRECTED IMPORT
+import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
 import { FaGoogle, FaUser, FaUsers } from 'react-icons/fa';
 
 // Enhanced AI-like destination data with more details
@@ -57,7 +57,7 @@ const vehicleOptions = [
 ];
 
 export default function AIBasedTripPlanner() {
-  const { user } = useAuth();
+  const { user } = UserAuth(); // CORRECTED FUNCTION CALL
   const [input, setInput] = useState('');
   const [suggestions, setSuggestions] = useState<Array<{name: string, type: string, description: string}>>([]);
   const [selectedPlaces, setSelectedPlaces] = useState<Array<{name: string, type: string, description: string}>>([]);
@@ -117,11 +117,9 @@ export default function AIBasedTripPlanner() {
     setSelectedPlaces(selectedPlaces.filter((p) => p.name !== placeName));
   };
 
-  // CORRECTED SIGN-IN FUNCTION
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      // Use signInWithRedirect to avoid cross-origin issues
       await signInWithRedirect(auth, provider);
     } catch (error) {
       console.error("Error signing in with Google: ", error);

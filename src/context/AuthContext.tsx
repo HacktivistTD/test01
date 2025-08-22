@@ -1,45 +1,52 @@
-// src/context/AuthContext.tsx
 'use client';
+import { useContext, createContext, useState, useEffect, ReactNode } from 'react';
+import {
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  User,
+} from 'firebase/auth';
+import { auth } from '../lib/firebase'; // Import auth from your firebase config
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth } from '../lib/firebase';
-
-// Define the shape of the context data
 interface AuthContextType {
   user: User | null;
-  loading: boolean;
+  googleSignIn: () => void;
+  logOut: () => void;
 }
 
-// Create the context with a default value
-const AuthContext = createContext<AuthContextType>({ user: null, loading: true });
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Create the provider component
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+
+  const googleSignIn = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider);
+  };
+
+  const logOut = () => {
+    signOut(auth);
+  };
 
   useEffect(() => {
-    // Subscribe to Firebase's auth state changes
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      setLoading(false);
     });
-
-    // Unsubscribe when the component unmounts
     return () => unsubscribe();
   }, []);
 
-  const value = { user, loading };
-
   return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
+    <AuthContext.Provider value={{ user, googleSignIn, logOut }}>
+      {children}
     </AuthContext.Provider>
   );
 };
 
-// Create a custom hook to use the auth context easily
-export const useAuth = () => {
-  return useContext(AuthContext);
+export const UserAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('UserAuth must be used within an AuthContextProvider');
+  }
+  return context;
 };
